@@ -15,17 +15,19 @@
 #define EYE_LEFT_X_DEFAULT 226
 #define EYE_LEFT_Y_DEFAULT 408
 #define EYE_MOVE_MAX 5
+#define MOVE_STEP 5
 
-// Global variables
 HINSTANCE hInst;
 UINT MessageCount = 0;
 UINT Count = 0;
 int posX = 0;
 int posY = 0;
 
+COLORREF eyeColour = EYES_BLACK;
 int eyeRightX = EYE_RIGHT_X_DEFAULT, eyeRightY = EYE_RIGHT_Y_DEFAULT;
 int eyeLeftX = EYE_LEFT_X_DEFAULT, eyeLeftY = EYE_LEFT_Y_DEFAULT;
-COLORREF eyeColour = EYES_BLACK;
+int windowWidth = 0, windowHeight = 0;
+int foxX = 0, foxY = 0;
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
@@ -33,6 +35,13 @@ LRESULT CALLBACK MainWndProc(HWND, UINT, WPARAM, LPARAM);
 void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
                  POINT cursorPosition);
 void paintPosition(HWND hWnd, HDC hDC, PAINTSTRUCT ps);
+
+// Simple helper to refresh the image
+void refreshImg(HWND hWnd) {
+     RECT rectFox;
+     SetRect(&rectFox, foxX, foxY, foxX + IMG_SIZE_X, foxY + IMG_SIZE_Y);
+     InvalidateRect(hWnd, &rectFox, FALSE);
+}
 
 // Application entry point. This is the same as main() in standard C.
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
@@ -64,7 +73,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
      // create window of registered class
 
      hWnd = CreateWindow("MainWClass",         // name of window class
-                         "ITU",                // title-bar string
+                         "ITU FOX ITU FOX",    // title-bar string
                          WS_OVERLAPPEDWINDOW,  // top-level window
                          200,                  // default horizontal position
                          25,                   // default vertical position
@@ -132,16 +141,31 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                switch (wParam) {
                          // update posX and posY in order to move object
                     case VK_LEFT:  // left arrow
+                    case 0x41:     // 'A'
+                         foxX = max(foxX - MOVE_STEP, 0);
                          break;
                     case VK_RIGHT:  // right arrow
+                    case 0x44:      // 'D'
+                         foxX = min(foxX + MOVE_STEP, windowWidth - IMG_SIZE_X);
                          break;
                     case VK_UP:  // up arrow
+                    case 0x57:   // 'W'
+                         foxY = max(foxY - MOVE_STEP, 0);
                          break;
                     case VK_DOWN:  // down arrow
+                    case 0x53:     // 'S'
+                         foxY
+                             = min(foxY + MOVE_STEP, windowHeight - IMG_SIZE_Y);
                          break;
 
                     // react on the other pressed keys
                     case VK_SPACE:  // space
+                         foxX = 0;
+                         foxY = 0;
+
+                         // Abrupt change may leave fragments of the image
+                         // so force redraw the whole window
+                         InvalidateRect(hWnd, NULL, TRUE);
                          break;
                     case VK_BACK:  // backspace
                          break;
@@ -164,9 +188,7 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                          // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
                }
 
-               RECT rect;
-               SetRect(&rect, 0, 0, IMG_SIZE_X, IMG_SIZE_Y);
-               InvalidateRect(hWnd, &rect, FALSE);
+               refreshImg(hWnd);
                break;
 
           // get cursor position
@@ -194,16 +216,14 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                     eyeLeftX = EYE_LEFT_X_DEFAULT + deltaX;
                     eyeLeftY = EYE_LEFT_Y_DEFAULT + deltaY;
 
-                    // Make Windows redraw the area
-                    RECT rect;
-                    SetRect(&rect, 0, 0, IMG_SIZE_X, IMG_SIZE_Y);
-                    InvalidateRect(hWnd, &rect, FALSE);
+                    refreshImg(hWnd);
                }
                break;
 
           // react on mouse clicks
           case WM_LBUTTONDOWN:
                SetCapture(hWnd);
+               refreshImg(hWnd);
                break;
           case WM_LBUTTONUP:
                ReleaseCapture();
@@ -215,12 +235,19 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                eyeLeftY = EYE_LEFT_Y_DEFAULT;
 
                // Force redraw
-               InvalidateRect(hWnd, NULL, FALSE);
+               refreshImg(hWnd);
                break;
 
           // paint objects
           case WM_PAINT:
                hDC = BeginPaint(hWnd, &ps);
+
+               // Determine window size
+               RECT rect;
+               GetClientRect(hWnd, &rect);
+               windowWidth = rect.right - rect.left;
+               windowHeight = rect.bottom - rect.top;
+
                paintObject(hWnd, hDC, ps, posX, posY, cursorPosition);
                paintPosition(hWnd, hDC, ps);
                EndPaint(hWnd, &ps);
@@ -249,7 +276,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
      HPEN hPen;
      HBRUSH hBrush;
 
-     /* Draw a background white rectangle */
+     /* Draw a background rectangle */
 
      hPen = CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
      hBrush = CreateSolidBrush(RGB(255, 255, 255));
@@ -257,7 +284,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
      SelectObject(hDC, hPen);
      SelectObject(hDC, hBrush);
 
-     Rectangle(hDC, 0, 0, 600, 709);
+     Rectangle(hDC, foxX, foxY, IMG_SIZE_X + foxX, IMG_SIZE_Y + foxY);
 
      DeleteObject(hPen);
      DeleteObject(hBrush);
@@ -367,9 +394,12 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
             RGB(31, 31, 31),    RGB(31, 31, 31),    RGB(31, 31, 31),
             RGB(61, 61, 61),    RGB(255, 255, 255), RGB(255, 255, 255)};
 
+     /* Sanity check for self – same number of colours and points */
+
      int polyCount = sizeof(triangles) / sizeof(triangles[0]);
-     if (sizeof(colours) / sizeof(COLORREF) < polyCount) {
-          printf("Error: missed a colour, chief!");
+     if (sizeof(colours) / sizeof(COLORREF) != polyCount) {
+          MessageBox(hWnd, "Number of colours and points do not match!",
+                     "Error", MB_OK);
           return;
      }
 
@@ -381,6 +411,12 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
 
           SelectObject(hDC, hPen);
           SelectObject(hDC, hBrush);
+
+          // Adjust point to foxX and foxY
+          for (int j = 0; j < 3; ++j) {
+               triangles[i][j].x += foxX;
+               triangles[i][j].y += foxY;
+          }
 
           Polygon(hDC, triangles[i], 3);
 
@@ -396,8 +432,10 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
      SelectObject(hDC, hPen);
      SelectObject(hDC, hBrush);
 
-     Ellipse(hDC, eyeRightX, eyeRightY, eyeRightX + 4, eyeRightY + 12);
-     Ellipse(hDC, eyeLeftX, eyeLeftY, eyeLeftX + 4, eyeLeftY + 12);
+     Ellipse(hDC, eyeRightX + foxX, eyeRightY + foxY, eyeRightX + foxX + 4,
+             eyeRightY + foxY + 12);
+     Ellipse(hDC, eyeLeftX + foxX, eyeLeftY + foxY, eyeLeftX + foxX + 4,
+             eyeLeftY + foxY + 12);
 
      DeleteObject(hPen);
      DeleteObject(hBrush);
@@ -414,7 +452,7 @@ void paintPosition(HWND hWnd, HDC hDC, PAINTSTRUCT ps) {
                        OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, DEFAULT_QUALITY,
                        FF_DONTCARE, 0);
      oldFont = (HFONT)SelectObject(hDC, font);
-     sprintf(text, "Position -- x:%d, y:%d", posX, posY);
+     sprintf(text, "Position -- x:%d, y:%d", foxX, foxY);
      TextOut(hDC, 50, 600, text, (int)strlen(text));
      SelectObject(hDC, oldFont);
      DeleteObject(font);
