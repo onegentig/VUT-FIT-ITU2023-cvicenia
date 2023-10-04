@@ -18,8 +18,8 @@ UINT Count = 0;
 int posX = 0;
 int posY = 0;
 
-int eyeRightX = 370, eyeRightY = 408;
-int eyeLeftX = 226, eyeLeftY = 410;
+int eyeRightX = EYE_RIGHT_X_DEFAULT, eyeRightY = EYE_RIGHT_Y_DEFAULT;
+int eyeLeftX = EYE_LEFT_X_DEFAULT, eyeLeftY = EYE_LEFT_Y_DEFAULT;
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
@@ -149,30 +149,27 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
           // get cursor position
           case WM_MOUSEMOVE:
                if (wParam & MK_LBUTTON) {  // left button is pressed
+                    // Get cursor position
                     int mouseX = LOWORD(lParam);
                     int mouseY = HIWORD(lParam);
 
-                    // Get distance from default position
-                    int deltaXRight = mouseX - EYE_RIGHT_X_DEFAULT;
-                    int deltaYRight = mouseY - EYE_RIGHT_Y_DEFAULT;
-                    int deltaXLeft = mouseX - EYE_LEFT_X_DEFAULT;
-                    int deltaYLeft = mouseY - EYE_LEFT_Y_DEFAULT;
+                    // Midpoint (for a more natural movement)
+                    int midX = (EYE_RIGHT_X_DEFAULT + EYE_LEFT_X_DEFAULT) / 2;
+                    int midY = (EYE_RIGHT_Y_DEFAULT + EYE_LEFT_Y_DEFAULT) / 2;
+
+                    // Get distance from midpoint
+                    int deltaX = mouseX - midX;
+                    int deltaY = mouseY - midY;
 
                     // Ensure boundaries
-                    deltaXRight
-                        = max(min(deltaXRight, EYE_MOVE_MAX), -EYE_MOVE_MAX);
-                    deltaYRight
-                        = max(min(deltaYRight, EYE_MOVE_MAX), -EYE_MOVE_MAX);
-                    deltaXLeft
-                        = max(min(deltaXLeft, EYE_MOVE_MAX), -EYE_MOVE_MAX);
-                    deltaYLeft
-                        = max(min(deltaYLeft, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+                    deltaX = max(min(deltaX, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+                    deltaY = max(min(deltaY, EYE_MOVE_MAX), -EYE_MOVE_MAX);
 
-                    // Update the eye position.
-                    eyeRightX = EYE_RIGHT_X_DEFAULT + deltaXRight;
-                    eyeRightY = EYE_RIGHT_Y_DEFAULT + deltaYRight;
-                    eyeLeftX = EYE_LEFT_X_DEFAULT + deltaXLeft;
-                    eyeLeftY = EYE_LEFT_Y_DEFAULT + deltaYLeft;
+                    // Update the eye position
+                    eyeRightX = EYE_RIGHT_X_DEFAULT + deltaX;
+                    eyeRightY = EYE_RIGHT_Y_DEFAULT + deltaY;
+                    eyeLeftX = EYE_LEFT_X_DEFAULT + deltaX;
+                    eyeLeftY = EYE_LEFT_Y_DEFAULT + deltaY;
 
                     // Make Windows redraw the area
                     RECT rect;
