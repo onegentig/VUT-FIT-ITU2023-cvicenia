@@ -3,6 +3,11 @@
 #include <string.h>
 #include <windows.h>
 
+#define EYES_RED RGB(255, 0, 0)
+#define EYES_GREEN RGB(0, 255, 0)
+#define EYES_BLUE RGB(0, 0, 255)
+#define EYES_BLACK RGB(0, 0, 0)
+
 #define IMG_SIZE_X 600
 #define IMG_SIZE_Y 709
 #define EYE_RIGHT_X_DEFAULT 370
@@ -20,6 +25,7 @@ int posY = 0;
 
 int eyeRightX = EYE_RIGHT_X_DEFAULT, eyeRightY = EYE_RIGHT_Y_DEFAULT;
 int eyeLeftX = EYE_LEFT_X_DEFAULT, eyeLeftY = EYE_LEFT_Y_DEFAULT;
+COLORREF eyeColour = EYES_BLACK;
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
@@ -141,9 +147,26 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                          break;
                     case VK_TAB:  // tab
                          break;
+                    case 0x4B:  // 'K' -> Black eyes
+                         eyeColour = EYES_BLACK;
+                         break;
+                    case 0x52:  // 'R' -> Red eyes
+                         eyeColour = EYES_RED;
+                         break;
+                    case 0x47:  // 'G' -> Green eyes
+                         eyeColour = EYES_GREEN;
+                         break;
+                    case 0x42:  // 'B' -> Blue eyes
+                         eyeColour = EYES_BLUE;
+                         break;
+
                          // more virtual codes can be found here:
                          // https://docs.microsoft.com/en-us/windows/win32/inputdev/virtual-key-codes
                }
+
+               RECT rect;
+               SetRect(&rect, 0, 0, IMG_SIZE_X, IMG_SIZE_Y);
+               InvalidateRect(hWnd, &rect, FALSE);
                break;
 
           // get cursor position
@@ -367,8 +390,8 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
 
      /* Draw eyes */
 
-     hPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-     hBrush = CreateSolidBrush(RGB(0, 0, 0));
+     hPen = CreatePen(PS_SOLID, 1, eyeColour);
+     hBrush = CreateSolidBrush(eyeColour);
 
      SelectObject(hDC, hPen);
      SelectObject(hDC, hBrush);
