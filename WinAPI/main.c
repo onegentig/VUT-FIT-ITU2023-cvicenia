@@ -3,12 +3,23 @@
 #include <string.h>
 #include <windows.h>
 
+#define IMG_SIZE_X 600
+#define IMG_SIZE_Y 709
+#define EYE_RIGHT_X_DEFAULT 370
+#define EYE_RIGHT_Y_DEFAULT 408
+#define EYE_LEFT_X_DEFAULT 226
+#define EYE_LEFT_Y_DEFAULT 408
+#define EYE_MOVE_MAX 5
+
 // Global variables
 HINSTANCE hInst;
 UINT MessageCount = 0;
 UINT Count = 0;
 int posX = 0;
 int posY = 0;
+
+int eyeRightX = 370, eyeRightY = 408;
+int eyeLeftX = 226, eyeLeftY = 410;
 
 // Function prototypes
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int);
@@ -137,12 +148,54 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
 
           // get cursor position
           case WM_MOUSEMOVE:
+               if (wParam & MK_LBUTTON) {  // left button is pressed
+                    int mouseX = LOWORD(lParam);
+                    int mouseY = HIWORD(lParam);
+
+                    // Get distance from default position
+                    int deltaXRight = mouseX - EYE_RIGHT_X_DEFAULT;
+                    int deltaYRight = mouseY - EYE_RIGHT_Y_DEFAULT;
+                    int deltaXLeft = mouseX - EYE_LEFT_X_DEFAULT;
+                    int deltaYLeft = mouseY - EYE_LEFT_Y_DEFAULT;
+
+                    // Ensure boundaries
+                    deltaXRight
+                        = max(min(deltaXRight, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+                    deltaYRight
+                        = max(min(deltaYRight, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+                    deltaXLeft
+                        = max(min(deltaXLeft, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+                    deltaYLeft
+                        = max(min(deltaYLeft, EYE_MOVE_MAX), -EYE_MOVE_MAX);
+
+                    // Update the eye position.
+                    eyeRightX = EYE_RIGHT_X_DEFAULT + deltaXRight;
+                    eyeRightY = EYE_RIGHT_Y_DEFAULT + deltaYRight;
+                    eyeLeftX = EYE_LEFT_X_DEFAULT + deltaXLeft;
+                    eyeLeftY = EYE_LEFT_Y_DEFAULT + deltaYLeft;
+
+                    // Make Windows redraw the area
+                    RECT rect;
+                    SetRect(&rect, 0, 0, IMG_SIZE_X, IMG_SIZE_Y);
+                    InvalidateRect(hWnd, &rect, FALSE);
+               }
                break;
 
           // react on mouse clicks
           case WM_LBUTTONDOWN:
+               SetCapture(hWnd);
                break;
           case WM_LBUTTONUP:
+               ReleaseCapture();
+
+               // Reset eye position
+               eyeRightX = EYE_RIGHT_X_DEFAULT;
+               eyeRightY = EYE_RIGHT_Y_DEFAULT;
+               eyeLeftX = EYE_LEFT_X_DEFAULT;
+               eyeLeftY = EYE_LEFT_Y_DEFAULT;
+
+               // Force redraw
+               InvalidateRect(hWnd, NULL, FALSE);
                break;
 
           // paint objects
@@ -150,9 +203,6 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
                hDC = BeginPaint(hWnd, &ps);
                paintObject(hWnd, hDC, ps, posX, posY, cursorPosition);
                paintPosition(hWnd, hDC, ps);
-               // paint other objects
-               // paintObject2(hWnd, hDC, ps, posX, posY, cursorPosition);
-               // paintObject3(hWnd, hDC, ps, posX, posY, cursorPosition);
                EndPaint(hWnd, &ps);
                DeleteDC(hDC);
                break;
@@ -176,6 +226,22 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
 
 void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
                  POINT cursorPosition) {
+     HPEN hPen;
+     HBRUSH hBrush;
+
+     /* Draw a background white rectangle */
+
+     hPen = CreatePen(PS_SOLID, 1, RGB(255, 255, 255));
+     hBrush = CreateSolidBrush(RGB(255, 255, 255));
+
+     SelectObject(hDC, hPen);
+     SelectObject(hDC, hBrush);
+
+     Rectangle(hDC, 0, 0, 600, 709);
+
+     DeleteObject(hPen);
+     DeleteObject(hBrush);
+
      /* Define the low-poly fox */
 
      POINT triangles[][3] = {{{93, 65}, {259, 200}, {182, 183}},
@@ -290,8 +356,8 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
      /* Draw the low-poly fox */
 
      for (int i = 0; i < polyCount; ++i) {
-          HPEN hPen = CreatePen(PS_SOLID, 1, colours[i]);
-          HBRUSH hBrush = CreateSolidBrush(colours[i]);
+          hPen = CreatePen(PS_SOLID, 1, colours[i]);
+          hBrush = CreateSolidBrush(colours[i]);
 
           SelectObject(hDC, hPen);
           SelectObject(hDC, hBrush);
@@ -304,14 +370,14 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
 
      /* Draw eyes */
 
-     HPEN hPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
-     HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
+     hPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+     hBrush = CreateSolidBrush(RGB(0, 0, 0));
 
      SelectObject(hDC, hPen);
      SelectObject(hDC, hBrush);
 
-     Ellipse(hDC, 370, 408, 370 + 5, 408 + 15);
-     Ellipse(hDC, 226, 408, 226 + 5, 408 + 15);
+     Ellipse(hDC, eyeRightX, eyeRightY, eyeRightX + 4, eyeRightY + 12);
+     Ellipse(hDC, eyeLeftX, eyeLeftY, eyeLeftX + 4, eyeLeftY + 12);
 
      DeleteObject(hPen);
      DeleteObject(hBrush);
