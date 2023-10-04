@@ -176,6 +176,8 @@ LRESULT CALLBACK MainWndProc(HWND hWnd,      // handle to window
 
 void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
                  POINT cursorPosition) {
+     /* Define the low-poly fox */
+
      POINT triangles[][3] = {{{93, 65}, {259, 200}, {182, 183}},
                              {{182, 183}, {259, 200}, {219, 254}},
                              {{93, 65}, {182, 183}, {133, 296}},
@@ -285,6 +287,8 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
           return;
      }
 
+     /* Draw the low-poly fox */
+
      for (int i = 0; i < polyCount; ++i) {
           HPEN hPen = CreatePen(PS_SOLID, 1, colours[i]);
           HBRUSH hBrush = CreateSolidBrush(colours[i]);
@@ -297,6 +301,20 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
           DeleteObject(hPen);
           DeleteObject(hBrush);
      }
+
+     /* Draw eyes */
+
+     HPEN hPen = CreatePen(PS_SOLID, 1, RGB(0, 0, 0));
+     HBRUSH hBrush = CreateSolidBrush(RGB(0, 0, 0));
+
+     SelectObject(hDC, hPen);
+     SelectObject(hDC, hBrush);
+
+     Ellipse(hDC, 370, 408, 370 + 5, 408 + 15);
+     Ellipse(hDC, 226, 408, 226 + 5, 408 + 15);
+
+     DeleteObject(hPen);
+     DeleteObject(hBrush);
 
      return;
 }
