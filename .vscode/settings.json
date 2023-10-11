@@ -1,0 +1,9 @@
+{
+     "conventionalCommits.scopes": [
+          "winapi",
+          "figma",
+          "qt",
+          "web",
+          "wpf"
+     ]
+}
