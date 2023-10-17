@@ -289,7 +289,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
      DeleteObject(hPen);
      DeleteObject(hBrush);
 
-     /* Define the low-poly fox */
+     /* Define points of the fox */
 
      POINT triangles[][3] = {{{93, 65}, {259, 200}, {182, 183}},
                              {{182, 183}, {259, 200}, {219, 254}},
@@ -394,7 +394,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
             RGB(31, 31, 31),    RGB(31, 31, 31),    RGB(31, 31, 31),
             RGB(61, 61, 61),    RGB(255, 255, 255), RGB(255, 255, 255)};
 
-     /* Sanity check for self – same number of colours and points */
+     /* Sanity check – same number of colours and points */
 
      int polyCount = sizeof(triangles) / sizeof(triangles[0]);
      if (sizeof(colours) / sizeof(COLORREF) != polyCount) {
@@ -403,7 +403,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
           return;
      }
 
-     /* Draw the low-poly fox */
+     /* Fox */
 
      for (int i = 0; i < polyCount; ++i) {
           hPen = CreatePen(PS_SOLID, 1, colours[i]);
@@ -424,7 +424,7 @@ void paintObject(HWND hWnd, HDC hDC, PAINTSTRUCT ps, int posX, int posY,
           DeleteObject(hBrush);
      }
 
-     /* Draw eyes */
+     /* Eyes */
 
      hPen = CreatePen(PS_SOLID, 1, eyeColour);
      hBrush = CreateSolidBrush(eyeColour);
