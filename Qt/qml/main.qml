@@ -21,9 +21,10 @@ Window {
      ListModel {
           id: operations;
           ListElement { op: "+"; tog: false; }
-          ListElement { op: "-"; tog: true; }
-          // TODO
-          // Rozšiřte model o další dvě základní matematické operace 
+          ListElement { op: "-"; tog: false; }
+          // TODO: Rozšiřte model o další dvě základní matematické operace
+          ListElement { op: "×"; tog: false; }
+          ListElement { op: "÷"; tog: false; }
      }
 
      // Prvek pro rozvržení prvků do sloupce
@@ -39,7 +40,6 @@ Window {
                anchors.margins: 2
                color: "#777"
 
-
                TextInput {
                     anchors.fill: parent;
                     anchors.margins: 2
@@ -48,7 +48,6 @@ Window {
                     id: textA
                     font.pointSize: 22
                     text: "0"
-                    
                }
           }
 
@@ -66,7 +65,6 @@ Window {
                     // @disable-check M301
                     delegate: MyButton {
                          btnColor: Theme.btn_colour
-                         
                          text: model.op
                          toggled: model.tog;
                          
@@ -77,7 +75,6 @@ Window {
                          }
                     }
                }
-
           }
 
           // "Vlastní" třída pro posuvník. Definice v MySlider.qml
@@ -86,7 +83,6 @@ Window {
                id: slider
                color: Qt.darker(Theme.slider_color)
                rectColor: Theme.slider_color
-
           }
 
           // TODO
@@ -94,13 +90,12 @@ Window {
           // do výsledné aplikace a bude zobrazoval vertikálně vycentrovaný
           // text 'LUT value: ' a hodnotu aktuálně vybrané položky z LUT
 
-
           // Vlastní klikací tlačítko. Definice v MyClickButton.qml
           // @disable-check M301
           MyClickButton {
                width: 400;
                btnColor: Theme.btn_colour
-               
+               btnColorClicked: Theme.btn_colour_clicked
                text: qsTr( "Compute" )
                
                function getOperation() {
@@ -121,7 +116,6 @@ Window {
                     // korektní výsledek (tj. ne NaN, ale číslo). Pokud 
                     // je hodnota a NaN, změňte barvu vstupního pole
                     // na červenou a vypište chybu do pole pro výsledek
-
                     
                     // TODO
                     // Upravte načtení hodnoty b tak, aby získal hodnotu b
@@ -159,7 +153,6 @@ Window {
                     color: "#0066FF"
                }
           }
-
      }
 
      // Vytvoření objektu LUT, který je definován v C++
@@ -167,6 +160,5 @@ Window {
      LUT {
           id: lut
      }
-
 }
 

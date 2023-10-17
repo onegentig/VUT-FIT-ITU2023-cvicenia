@@ -6,23 +6,21 @@ Rectangle {
      width: 100
      height: 100
 
-     property alias text: txt.text;
-
      // Proměnné, které mají parametr property jsou přístupné zvenčí
+     property alias text: txt.text;
      property color btnColor: "#777777";
+     property color btnColorClicked: "#777777";
      property color textColor: mouse.pressed ? "#0066FF" : "black"
-
-     // Definování signálu
-     signal clicked();
 
      border.color: "#bbbbbb";
      border.width: 3;
 
-     // TODO
-     // Upravte nastavení hodnoty color tak,
+     // TODO: Upravte nastavení hodnoty color tak,
      // aby při stisknutí myši se změnila barva tlačítka
-     color: btnColor
+     color: mouse.pressed ? btnColorClicked : btnColor;
 
+     // Definování signálu
+     signal clicked();
 
      // Samotná třída Rectangle nijak nezachytává signály
      // ze vstupních zařízení. Pro jejich zachytávání a zpracování
@@ -44,10 +42,12 @@ Rectangle {
      Text {
           id: txt;
           
-          // TODO
-          // Nastavte parametry tohoto prvku tak,
+          // TODO: Nastavte parametry tohoto prvku tak,
           // aby výsledný text byl zarovnán na střed tlačítka
           // a měl vhodné formátování
+          anchors.centerIn: parent;
+          color: textColor;
+          font.pointSize: 18;
+          font.bold: true;
      }
-
 }
