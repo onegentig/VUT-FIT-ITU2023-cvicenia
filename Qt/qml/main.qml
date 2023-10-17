@@ -4,16 +4,16 @@ import "../js/Theme.js" as Theme
 import cz.vutbr.fit 1.0
 
 Window {
-     visible: true
-     width: 400
-     height: 315 + lutdisp.height
+     visible: true;
+     width: 400;
+     height: 315 + lutdisp.height;
 
-     maximumWidth: 400
-     maximumHeight: 315 + lutdisp.height
-     minimumWidth: 400
-     minimumHeight: 315 + lutdisp.height
+     maximumWidth: 400;
+     maximumHeight: 315 + lutdisp.height;
+     minimumWidth: 400;
+     minimumHeight: 315 + lutdisp.height;
 
-     title: "ITU - Qt 5 / QML kalkulačka"
+     title: "ITU - Qt 5 / QML kalkulačka";
 
      // Definování datového modelu s operátory
      // 'op' - zkratka pro operaci
@@ -36,10 +36,10 @@ Window {
                id: input;
                height: 35;
                width: 400;
-               border.color: "#bbb";
+               border.color: Theme.bg;
                border.width: 3;
                anchors.margins: 2;
-               color: Theme.in_colour;
+               color: Theme.bgBase;
 
                TextInput {
                     anchors.fill: parent;
@@ -51,7 +51,7 @@ Window {
                     text: "0";
 
                     onTextChanged: {
-                         input.color = Theme.in_colour;
+                         input.color = Theme.bgBase;
                     }
                }
           }
@@ -69,14 +69,17 @@ Window {
                     // Jak má vypadat jeden prvek
                     // @disable-check M301
                     delegate: MyButton {
-                         btnColor: Theme.btn_colour
-                         text: model.op
+                         btnColor: Theme.bgButton;
+                         text: model.op;
                          toggled: model.tog;
 
                          onClicked: {
                               for (var i = 0; i < operations.count; i++) {
                                    // @disable-check M325
                                    operations.setProperty( i, "tog", (i == index) );
+
+                                   slider.rectColor = Theme.bgSlider;
+                                   slider.color = Qt.darker(Theme.bgSlider);
                               }
                          }
                     }
@@ -86,17 +89,15 @@ Window {
           // "Vlastní" třída pro posuvník. Definice v MySlider.qml
           // @disable-check M301
           MySlider {
-               id: slider
-               color: Qt.darker(Theme.slider_color)
-               rectColor: Theme.slider_color
+               id: slider;
+               color: Qt.darker(Theme.bgSlider);
+               rectColor: Theme.bgSlider;
 
                onValueChanged: {
                     lutdisp.pos = slider.value;
 
-                    if (slider.rectColor === Qt.color("red")) {
-                         slider.rectColor = Theme.slider_color;
-                         slider.color = Qt.darker(Theme.slider_color);
-                    }
+                    slider.rectColor = Theme.bgSlider;
+                    slider.color = Qt.darker(Theme.bgSlider);
                }
           }
 
@@ -113,9 +114,9 @@ Window {
           // @disable-check M301
           MyClickButton {
                width: 400;
-               btnColor: Theme.btn_colour
-               btnColorClicked: Theme.btn_colour_clicked
-               text: qsTr( "Compute" )
+               btnColor: Theme.bgButton;
+               btnColorClicked: Qt.darker(Theme.bgButton);
+               text: qsTr("Compute");
 
                function getOperation() {
                     for (var i = 0; i < operations.count; i++) {
@@ -137,18 +138,18 @@ Window {
                     var b = lut.getValue(slider.value);
 
                     function errorInput() {
-                         input.color = Qt.darker("red");
-                         result.color = "red";
+                         input.color = Theme.bgError;
+                         result.color = Theme.fgError;
                          result.text = "SyntaxError";
-                         console.log(NaN + " " + op + " " + b + " = NaN")
+                         console.log(NaN + " " + op + " " + b + " = NaN");
                     }
 
                     function errorSlider() {
-                         slider.rectColor = "red";
-                         slider.color = Qt.darker("red");
-                         result.color = "red";
+                         slider.rectColor = Theme.bgError;
+                         slider.color = Qt.darker(Theme.bgError);
+                         result.color = Theme.fgError;
                          result.text = "MathError";
-                         console.log(a + " " + op + " " + b + " = ∞")
+                         console.log(a + " " + op + " " + b + " = ∞");
                     }
 
                     // TODO: Zkontrolujte jestli funkce parseFloat vrátila
@@ -166,23 +167,25 @@ Window {
 
                     // TODO: Vypočítejte výslednou hodnotu danou operandy a, b
                     // a operátorem op, výsledek uložte do prvku result
-                    result.color = "#0066FF";
+                    let res = 0;
+                    result.color = Theme.fgNum;
                     switch (op) {
                     case "+":
-                         result.text = a + b;
+                         res = a + b;
                          break;
                     case "-":
-                         result.text = a - b;
+                         res = a - b;
                          break;
                     case "×":
-                         result.text = a * b;
+                         res = a * b;
                          break;
                     case "÷":
-                         result.text = a / b;
+                         res = a / b;
                          break;
                     }
 
-                    console.log(a + " " + op + " " + b + " = " + result.text)
+                    result.text = res.toFixed(5);
+                    console.log(a + " " + op + " " + b + " = " + result.text);
                }
           }
 
@@ -190,17 +193,17 @@ Window {
           Rectangle {
                height: 45;
                width: 400;
-               border.color: "#bbb";
+               border.color: Theme.bg;
                border.width: 3;
                anchors.margins: 2
-               color: "#777"
+               color: Theme.bgBase
 
                Text {
                     id: result;
-                    anchors.centerIn: parent
+                    anchors.centerIn: parent;
                     height: 35;
-                    font.pointSize: 22
-                    color: "#0066FF"
+                    font.pointSize: 22;
+                    color: Theme.fgNum;
                }
           }
      }
@@ -208,7 +211,7 @@ Window {
      // Vytvoření objektu LUT, který je definován v C++
      // K danému se přistupuje pomocí jeho id
      LUT {
-          id: lut
+          id: lut;
      }
 }
 
