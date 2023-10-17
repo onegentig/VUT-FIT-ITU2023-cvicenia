@@ -7,7 +7,7 @@ Window {
      visible: true
      width: 400
      height: 315 + lutdisp.height
-     
+
      maximumWidth: 400
      maximumHeight: 315 + lutdisp.height
      minimumWidth: 400
@@ -33,21 +33,26 @@ Window {
      Column {
           // Vstupní hodnota - první operand výpočtu
           Rectangle {
+               id: input;
                height: 35;
                width: 400;
                border.color: "#bbb";
                border.width: 3;
-               anchors.margins: 2
-               color: "#777"
+               anchors.margins: 2;
+               color: Theme.in_colour;
 
                TextInput {
                     anchors.fill: parent;
-                    anchors.margins: 2
-                    horizontalAlignment: TextInput.AlignLeft
-                    verticalAlignment: TextInput.AlignVCenter
-                    id: textA
-                    font.pointSize: 22
-                    text: "0"
+                    anchors.margins: 2;
+                    horizontalAlignment: TextInput.AlignLeft;
+                    verticalAlignment: TextInput.AlignVCenter;
+                    id: textA;
+                    font.pointSize: 16;
+                    text: "0";
+
+                    onTextChanged: {
+                         input.color = Theme.in_colour;
+                    }
                }
           }
 
@@ -67,9 +72,10 @@ Window {
                          btnColor: Theme.btn_colour
                          text: model.op
                          toggled: model.tog;
-                         
+
                          onClicked: {
                               for (var i = 0; i < operations.count; i++) {
+                                   // @disable-check M325
                                    operations.setProperty( i, "tog", (i == index) );
                               }
                          }
@@ -86,17 +92,21 @@ Window {
 
                onValueChanged: {
                     lutdisp.pos = slider.value;
+
+                    if (slider.rectColor === Qt.color("red")) {
+                         slider.rectColor = Theme.slider_color;
+                         slider.color = Qt.darker(Theme.slider_color);
+                    }
                }
           }
 
-          // TODO
-          // vložte nový textový prvek, který bude bude vizuálně 'zapadat'
+          // TODO: vložte nový textový prvek, který bude bude vizuálně 'zapadat'
           // do výsledné aplikace a bude zobrazoval vertikálně vycentrovaný
           // text 'LUT value: ' a hodnotu aktuálně vybrané položky z LUT
           // @disable-check M301
           MyLUTDisplay {
-             id: lutdisp;
-             value: lut.getValue(slider.value);
+               id: lutdisp;
+               value: lut.getValue(slider.value);
           }
 
           // Vlastní klikací tlačítko. Definice v MyClickButton.qml
@@ -106,7 +116,7 @@ Window {
                btnColor: Theme.btn_colour
                btnColorClicked: Theme.btn_colour_clicked
                text: qsTr( "Compute" )
-               
+
                function getOperation() {
                     for (var i = 0; i < operations.count; i++) {
                          var item = operations.get(i);
@@ -119,29 +129,60 @@ Window {
 
                // Obsluha události při zachycení signálu clicked
                onClicked: {
-                    var a = parseFloat(textA.text, 10);
-                    // TODO
-                    // Zkontrolujte jestli funkce parseFloat vrátila 
-                    // korektní výsledek (tj. ne NaN, ale číslo). Pokud 
+                    var a = Number(textA.text, 10);
+                    var op = getOperation();
+
+                    // TODO: Upravte načtení hodnoty b tak, aby získal hodnotu b
+                    // z LUT (Look Up Table) podle vybrané hodnoty na 'slider'
+                    var b = lut.getValue(slider.value);
+
+                    function errorInput() {
+                         input.color = Qt.darker("red");
+                         result.color = "red";
+                         result.text = "SyntaxError";
+                         console.log(NaN + " " + op + " " + b + " = NaN")
+                    }
+
+                    function errorSlider() {
+                         slider.rectColor = "red";
+                         slider.color = Qt.darker("red");
+                         result.color = "red";
+                         result.text = "MathError";
+                         console.log(a + " " + op + " " + b + " = ∞")
+                    }
+
+                    // TODO: Zkontrolujte jestli funkce parseFloat vrátila
+                    // korektní výsledek (tj. ne NaN, ale číslo). Pokud
                     // je hodnota a NaN, změňte barvu vstupního pole
                     // na červenou a vypište chybu do pole pro výsledek
-                    
-                    // TODO
-                    // Upravte načtení hodnoty b tak, aby získal hodnotu b
-                    // z LUT (Look Up Table) podle vybrané hodnoty na 'slider'
-                    var b = 0; 
+                    if (isNaN(a))
+                         return errorInput();
 
-                    // TODO
-                    // pokud se uživatel pokouší dělit nulou, změňte barvu
+                    // TODO: Pokud se uživatel pokouší dělit nulou, změňte barvu
                     // posuvníku na slideru na červenou a vypište chybu
                     // do pole pro výsledek
+                    if (b === 0 && getOperation() === "÷")
+                         return errorSlider();
 
-                    var op = getOperation();
-                    console.log( a + " "+ op + " " + b + " = ?")
-                    
-                    // TODO
-                    // Vypočítejte výslednou hodnotu danou operandy a, b
+                    // TODO: Vypočítejte výslednou hodnotu danou operandy a, b
                     // a operátorem op, výsledek uložte do prvku result
+                    result.color = "#0066FF";
+                    switch (op) {
+                    case "+":
+                         result.text = a + b;
+                         break;
+                    case "-":
+                         result.text = a - b;
+                         break;
+                    case "×":
+                         result.text = a * b;
+                         break;
+                    case "÷":
+                         result.text = a / b;
+                         break;
+                    }
+
+                    console.log(a + " " + op + " " + b + " = " + result.text)
                }
           }
 
@@ -153,9 +194,9 @@ Window {
                border.width: 3;
                anchors.margins: 2
                color: "#777"
-               
+
                Text {
-                    id:  result;
+                    id: result;
                     anchors.centerIn: parent
                     height: 35;
                     font.pointSize: 22
