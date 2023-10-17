@@ -6,12 +6,12 @@ import cz.vutbr.fit 1.0
 Window {
      visible: true
      width: 400
-     height: 315
+     height: 315 + lutdisp.height
      
      maximumWidth: 400
-     maximumHeight: 315
+     maximumHeight: 315 + lutdisp.height
      minimumWidth: 400
-     minimumHeight: 315
+     minimumHeight: 315 + lutdisp.height
 
      title: "ITU - Qt 5 / QML kalkulačka"
 
@@ -20,7 +20,7 @@ Window {
      // 'tog' - zkratka pro toggled, označení, která operace je vybrána
      ListModel {
           id: operations;
-          ListElement { op: "+"; tog: false; }
+          ListElement { op: "+"; tog: true; }
           ListElement { op: "-"; tog: false; }
           // TODO: Rozšiřte model o další dvě základní matematické operace
           ListElement { op: "×"; tog: false; }
@@ -83,12 +83,21 @@ Window {
                id: slider
                color: Qt.darker(Theme.slider_color)
                rectColor: Theme.slider_color
+
+               onValueChanged: {
+                    lutdisp.pos = slider.value;
+               }
           }
 
           // TODO
           // vložte nový textový prvek, který bude bude vizuálně 'zapadat'
           // do výsledné aplikace a bude zobrazoval vertikálně vycentrovaný
           // text 'LUT value: ' a hodnotu aktuálně vybrané položky z LUT
+          // @disable-check M301
+          MyLUTDisplay {
+             id: lutdisp;
+             value: lut.getValue(slider.value);
+          }
 
           // Vlastní klikací tlačítko. Definice v MyClickButton.qml
           // @disable-check M301

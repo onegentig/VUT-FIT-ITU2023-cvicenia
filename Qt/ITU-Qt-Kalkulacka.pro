@@ -14,7 +14,8 @@ RESOURCES += qml.qrc
 OTHER_FILES +=  qml/main.qml \
                 qml/MyButton.qml \
                 qml/MyClickButton.qml \
-                qml/MySlider.qml
+                qml/MySlider.qml \
+                qml/MyLUTDisplay.qml
 
 OTHER_FILES += js/Theme.js
 
