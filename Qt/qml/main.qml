@@ -8,6 +8,11 @@ Window {
      width: 400
      height: 315
      
+     maximumWidth: 400
+     maximumHeight: 315
+     minimumWidth: 400
+     minimumHeight: 315
+
      title: "ITU - Qt 5 / QML kalkulačka"
 
      // Definování datového modelu s operátory
@@ -25,7 +30,6 @@ Window {
      // http://en.wikipedia.org/wiki/Layout_%28computing%29
      // https://qmlbook.github.io/ch04-qmlstart/qmlstart.html#positioning-elements
      Column {
-
           // Vstupní hodnota - první operand výpočtu
           Rectangle {
                height: 35;
