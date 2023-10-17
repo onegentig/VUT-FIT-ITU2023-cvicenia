@@ -3,20 +3,18 @@
 
 #include <QObject>
 
-class LUT : public QObject
-{
-    Q_OBJECT
-public:
-    explicit LUT(QObject *parent = 0);
+class LUT : public QObject {
+     Q_OBJECT
+   public:
+     explicit LUT(QObject *parent = 0);
 
-    // Funkce vrací hodnotu Look up table danou indexem
-    // Makro Q_INVOKABLE umožní volání funkce z QML
-    Q_INVOKABLE double getValue(int index);
+     // Funkce vrací hodnotu Look up table danou indexem
+     // Makro Q_INVOKABLE umožní volání funkce z QML
+     Q_INVOKABLE double getValue(int index);
 
-signals:
+   signals:
 
-public slots:
-
+   public slots:
 };
 
-#endif // LUT_H
+#endif  // LUT_H
