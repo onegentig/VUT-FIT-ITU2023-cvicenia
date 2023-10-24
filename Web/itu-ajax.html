@@ -3,77 +3,27 @@
 <html>
 
 <head>
-    <title> ITU ajax </title>
-    <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
-    <style type="text/css">
-        div,
-        input {
-            margin: 10px;
-        }
-    </style>
+     <title> ITUChat </title>
+     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+     <style type="text/css">
+          div,
+          input {
+               margin: 10px;
+          }
+     </style>
 </head>
 
 <body>
-    <div id="chatArea" style="height: 300px; border: solid #aaa 1px; overflow:auto;"></div>
+     <div id="chatArea" style="height: 300px; border: solid #aaa 1px; overflow:auto;"></div>
 
-    <form onsubmit="return uploadData()">
-        <input type="text" id="newMessageString">
-        <input type="submit" value="send">
-    </form>
+     <form onsubmit="return uploadData()">
+          <input type="text" id="newMessageString">
+          <input type="submit" value="send">
+     </form>
 
-    <div id="status" style="border: solid #aaa 1px; ">&nbsp;</div>
+     <div id="status" style="border: solid #aaa 1px; ">&nbsp;</div>
 
-    <script type="text/javascript">
-
-        /***
-          * XMLHttpRequest object constructor (for compatibility with various browsers)
-          */
-        function createXmlHttpRequestObject () {
-            var request;
-
-            try {
-                request = new XMLHttpRequest(); // should work on all browsers except IE6 or older
-            }
-            catch (e) {
-                try {
-                    request = new ActiveXObject("Microsoft.XMLHttp"); // browser is IE6 or older
-                }
-                catch (e) {
-                    // ignore error
-                }
-            }
-
-            if (!request) {
-                alert("Error creating the XMLHttpRequest object.");
-            }
-            else {
-                return request;
-            }
-        }
-
-        function uploadData () {
-            document.getElementById("status").innerHTML = "uploadData()";
-
-            try {
-                var request = createXmlHttpRequestObject(); // stores XMLHttpRequestObject
-                //// put your code here
-            }
-            catch (e) {
-                alert(e.toString());
-            }
-
-            return false; // to avoid default form submit behavior 
-        }
-
-        function downloadData () {
-            document.getElementById("status").innerHTML = "downloadData()";
-
-            //// put your code here
-        }
-
-        //// put your code here
-
-    </script>
+     <script type="application/javascript" src="app.cjs"></script>
 </body>
 
 </html>
