@@ -159,7 +159,7 @@ function displayMessages (msgs) {
                 <span class="message-username">${msg.login}</span>
                 <span class="message-dts">${msgTimeStr}</span>
             </div>
-            <div class="message-content">${msg.cnt}</div>
+            <div class="message-content">${decodeURIComponent(msg.cnt)}</div>
         `;
 
           /* Pridať do chatu */
