@@ -36,11 +36,11 @@ chmod 0644 ~/WWW/itu-ajax.html
 V případě, že budete mít správně nastavený adresář, je možné k němu přistoupit z prohlížeče zadáním adresy ve tvaru `http://www.stud.fit.vutbr.cz/~xlogin00/nazev-vaseho-souboru.html`. Pro přístup k serveru `eva.fit.vutbr.cz` můžete využít několik možností:
 
 1. SSH
-  - ve Windows přes program [PUTTY](https://www.putty.org/), na linuxu v terminálu `ssh login@eva.fit.vutbr.cz`.
-  - měli byste se dostat na server přes konzolovou aplikaci (to je vhodné především pro nastavení oprávnění k adresáři)
+    - ve Windows přes program [PUTTY](https://www.putty.org/), na linuxu v terminálu `ssh login@eva.fit.vutbr.cz`.
+    - měli byste se dostat na server přes konzolovou aplikaci (to je vhodné především pro nastavení oprávnění k adresáři)
 2. FTP klient
-  - je možné použít nějaký FTP klient (např. WinSCP, aj.), po vyplnění údajů a připojení byste se měli dostat do domovského adresáře (stejný adresář, jako v případě ssh připojení)
-  - zde je pak možné přímo editovat jednotlivé soubory
+    - je možné použít nějaký FTP klient (např. WinSCP, aj.), po vyplnění údajů a připojení byste se měli dostat do domovského adresáře (stejný adresář, jako v případě ssh připojení)
+    - zde je pak možné přímo editovat jednotlivé soubory
 
 V laboratořích na OS Windows se programy PUTTY a WinSCP nacházejí v adresáři `Q:\netapp`.
 
@@ -48,7 +48,7 @@ V laboratořích na OS Windows se programy PUTTY a WinSCP nacházejí v adresá�
 
 [AJAX](https://www.w3schools.com/js/js_ajax_intro.asp) je zkratkou pro Asynchronous JavaScript and XML. AJAX umožňuje JavaScriptu **na straně klienta na pozadí zasílat požadavky na server** a získat tak nová data k zobrazení, aniž by došlo ke znovunačtení zobrazované stránky. Lze tak docílit mnohem dynamičtějších webových stránek, jejichž chování může být z hlediska uživatelských rozhraní mnohem inteligentnější.
 
-//obrázek sem
+![image](https://github.com/onegentig/VUT-FIT-ITU2023-cvicenia/assets/84882649/44985705-bbdd-4886-b2df-9b631d6e86b2)
 
 ### Požadavky ###
 
@@ -60,7 +60,7 @@ Důležitým atributem požadavku v rámci AJAXu je tzv. [readyState](https://ww
 
 ### Odpovědi ###
 
-Na každý požadavek server odesílá odpověď. Důležitým atributem odpovědi je její [status](status). Pomocí něj se určuje, zda se daný požadavek podařilo zpracovat, nebo došlo k chybě. Status odpovědi typicky zobrazují také prohlížeče, kdy například při chybně zadané URL dostaneme známý kód 404 (nenalezeno). Pokud vše proběhne v pořádku, používá se kód 200 (OK). Druhým důležitým atributem jsou získaná data, která je potřeba následně zpracovat.
+Na každý požadavek server odesílá odpověď. Důležitým atributem odpovědi je její status. Pomocí něj se určuje, zda se daný požadavek podařilo zpracovat, nebo došlo k chybě. Status odpovědi typicky zobrazují také prohlížeče, kdy například při chybně zadané URL dostaneme známý kód 404 (nenalezeno). Pokud vše proběhne v pořádku, používá se kód 200 (OK). Druhým důležitým atributem jsou získaná data, která je potřeba následně zpracovat.
 
 ### Užitečné kódy ###
 
@@ -102,7 +102,7 @@ function createXmlHttpRequestObject()
 }
 ```
 
-#### Odeslání požadavku ####
+#### Odeslání požadavku ####
 
 Abychom mohli odeslat požadavek, je potřeba jej nejprve **vytvořit a správně inicializovat**. Inicializace se provádí pomocí metody [open](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/open), které je nutné předat parametry: metodu požadavku (v našem případě "GET" nebo "POST"), URL adresu serveru, na kterou chceme požadavek zaslat, a hodnotu typu bool, která vyjadřuje asynchronnost požadavku (v našem případě true). Protože je požadavek asynchronní (po odeslání se nečeká na odpověď, ale pokračuje se ve vykonávání dalšího kódu), je potřeba zpracovat odpověď až ve chvíli, kdy je oznámeno, že již přišla celá odpověď. K tomuto účelu slouží [událost](https://www.w3schools.com/js/js_events.asp) (event) [onreadystatechange](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/onreadystatechange). Tato událost je vyvolána vždy, když se změní hodnota atributu readyState (viz předchozí část). Poté, co nastane změna hodnoty, vyvolá se [kód](https://www.w3schools.com/js/js_ajax_http_response.asp) ([callback](https://www.w3schools.com/js/js_ajax_http_response.asp)), který je pro tuto událost naprogramovaný. Jako callback lze použít buďto **ukazatel na funkci**, nebo použít takzvanou **anonymní funkci**. V našem případě je potřeba otestovat, jakou hodnotu má aktuálně atribut readyState a jaký je status kód odpovědi (potřebné hodnoty těchto proměnných jsou uvedeny výše). Odpověď ze serveru se potom nachází v atributu [responseText](https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseText).
 
@@ -141,7 +141,7 @@ Pro získání nejnovějších dvaceti zpráv zašlete GET požadavek na URL ser
 
 Pro odeslání zprávy je potřeba zaslat POST požadavek na URL serveru s tím, že v obsahu požadavku bude vaše zpráva ve formátu `"data=<obsah_zprávy>"`. Žádné další informace serveru zasílat nemusíte (identifikační číslo i časové razítko zprávě server přidělí sám). Volitelně je možno zaslat informaci o jménu autora (v případě nezaslání se použije generický autor xlogin00) přidáním parametru user do odesílaných dat. Celý odesílaný řetězec by pak mohl vypadat například takto: "user=muj_login&data=Moje zprava" Server vám v odpovědi vrátí pouze informaci, že byla vaše zpráva uložena na server.
 
-## Základy JavaScriptu ##
+## Základy JavaScriptu ##
 
 [JavaScript](https://www.w3schools.com/js/default.asp) je hodně volný jazyk, syntaxí se podobá jazyku C.
 
