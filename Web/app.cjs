@@ -1,6 +1,16 @@
 /* eslint no-alert: "off" */
 /* eslint no-unused-vars: "off" */
 
+/* === Globálne importy === */
+
+/* eslint-disable no-var */
+
+/** @global */
+/** @type {import('dayjs') & import('dayjs/plugin/calendar')} */
+var dayjs;
+
+/* eslint-enable no-var */
+
 /* === Typy === */
 
 /**
@@ -16,8 +26,9 @@
 /* Konfigurácia */
 
 const API_URL = 'https://pckiss.fit.vutbr.cz/itu/api.php';
-const POOLING_TIME = 1000; // v milisekundách
 const USERNAME = 'xnotme69';
+const POOLING_TIME = 1000; // v milisekundách
+const STATUS_CHANGE_FLASH_TIME = 100; // v milisekundách
 
 /* Systémové konštanty */
 
@@ -123,6 +134,9 @@ function downloadData () {
 function displayMessages (msgs) {
      const chat = document.querySelector('#chatArea');
 
+     // Scroll iba ak je view na spodku chatu.
+     const shouldScroll = chat.scrollTop + chat.clientHeight > chat.scrollHeight - 100;
+
      for (const msg of msgs) {
           /**
            * K div-om správ pridávam id pre jednoduché odfiltrovanie
@@ -135,11 +149,15 @@ function displayMessages (msgs) {
           const msgDiv = document.createElement('div');
           msgDiv.id = `message-${msg.id}`;
 
+          /* day.js */
+          let msgTimeStr = '';
+          msgTimeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString();
+
           /* Obsah */
           msgDiv.innerHTML = `
             <div class="message-header">
                 <span class="message-username">${msg.login}</span>
-                <span class="message-dts">${msg.dts}</span>
+                <span class="message-dts">${msgTimeStr}</span>
             </div>
             <div class="message-content">${msg.cnt}</div>
         `;
@@ -149,7 +167,7 @@ function displayMessages (msgs) {
      }
 
      /* Scrollnúť na spodok */
-     chat.scrollTop = chat.scrollHeight;
+     if (shouldScroll) chat.scrollTop = chat.scrollHeight;
 }
 
 /* === Pomocné funkcie === */
@@ -160,7 +178,16 @@ function displayMessages (msgs) {
  * @returns {void}
  */
 function updateStatus (message) {
-     document.querySelector('#status').innerHTML = message;
+     const stat = /** @type {HTMLElement} */ (document.querySelector('#status'));
+
+     /* Zmeniť text */
+     stat.innerHTML = message;
+
+     /* Zmeniť farbu na žltú (na krátku chvíľu) */
+     stat.style.color = 'yellow';
+     setTimeout(() => {
+          stat.style.color = 'white';
+     }, STATUS_CHANGE_FLASH_TIME);
 }
 
 /**
