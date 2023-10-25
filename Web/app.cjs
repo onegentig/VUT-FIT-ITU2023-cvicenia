@@ -216,7 +216,7 @@ function displayError (message) {
  */
 function createMsgComponent (msg) {
      /* Časový string (day.js, ak dostupné) */
-     const timeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString('cz-CZ', { dateStyle: 'short', timeStyle: 'short' });
+     const timeStr = typeof dayjs === 'function' ? dayjs(msg.dts).calendar() : new Date(msg.dts).toLocaleString('cz-CZ', { dateStyle: 'short', timeStyle: 'short' });
      const avatar = avatarsMap[msg.login] || `https://ui-avatars.com/api/?name=${msg.login}&background=random&size=48&bold=true`;
 
      return `
