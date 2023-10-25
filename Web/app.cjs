@@ -26,7 +26,7 @@ var dayjs;
 /* Konfigurácia */
 
 const API_URL = 'https://pckiss.fit.vutbr.cz/itu/api.php';
-const USERNAME = 'xnotme69';
+const USERNAME = '';
 const FLASH_COLOR = 'hsl(48, 100%, 67%)';
 const POOLING_TIME = 1000; // v milisekundách
 const STATUS_CHANGE_FLASH_TIME = 100; // v milisekundách
@@ -99,8 +99,7 @@ function uploadData () {
                if (req.status === STATUS_OK) return; // Všetko OK
 
                // Nie je OK :(
-               const res = JSON.parse(req.responseText);
-               displayError(res.error);
+               displayError('Could not upload data (check console). :(');
           }
      });
 
@@ -120,7 +119,7 @@ function downloadData () {
      req.addEventListener('readystatechange', () => {
           if (req.readyState === READY_STATE_DONE) {
                if (req.status !== STATUS_OK)
-                    return displayError(req.statusText);
+                    return displayError(req.statusText || 'Could not download data (is BE alive?)');
 
                const res = JSON.parse(req.responseText);
                displayMessages(res); // Zobraziť správy
@@ -208,7 +207,7 @@ function updateStatus (message) {
  */
 function displayError (message) {
      console.error(message);
-     alert(message);
+     window.alert(message);
 }
 
 /**
@@ -222,28 +221,28 @@ function createMsgComponent (msg) {
      const avatar = avatarsMap[msg.login] || `https://ui-avatars.com/api/?name=${msg.login}&background=random&size=48&bold=true`;
 
      return `
-    <div id="msg-${msg.id}" class="my-4 is-flex">
-        <!-- Avatar -->
-        <figure class="image is-48x48 mr-3">
-            <img class="msg-img is-rounded" src="${avatar}" alt="${msg.login}" />
-        </figure>
+     <div id="msg-${msg.id}" class="my-4 is-flex">
+          <!-- Avatar -->
+          <figure class="image is-48x48 mr-3">
+               <img class="msg-img is-rounded" src="${avatar}" alt="${msg.login}" />
+          </figure>
 
-        <!-- Message box -->
-        <div class="msg-box">
-            <div class="is-flex mb-1">
-                <!-- Username -->
-                <strong class="msg-name has-text-secondary-dark">${msg.login}</strong>
-                <!-- Timestamp -->
-                <span class="msg-time has-text-grey-dark is-size-7">${timeStr}</span>
-            </div>
+          <!-- Message box -->
+          <div class="msg-box">
+               <div class="is-flex mb-1">
+                    <!-- Username -->
+                    <strong class="msg-name has-text-secondary-dark">${msg.login || '▄█ ’M ▓▒'}</strong>
+                    <!-- Timestamp -->
+                    <span class="msg-time has-text-grey-dark is-size-7">${timeStr}</span>
+               </div>
 
-            <!-- Message Content -->
-            <div class="msg-content">
-                ${msg.cnt}
-            </div>
-        </div>
-    </div>
-`;
+               <!-- Message Content -->
+               <div class="msg-content">
+                    ${msg.cnt}
+               </div>
+          </div>
+     </div>
+     `;
 }
 
 /* === Koreňové volania === */
