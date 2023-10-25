@@ -18,16 +18,10 @@
      <!-- Styles -->
      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
      <link rel="stylesheet" href="chat.css">
-     <style type="text/css">
-          /*div,
-          input {
-               margin: 10px;
-          }*/
-     </style>
 </head>
 
 <body class="use-bulma m-6">
-     <div id="chatArea" class="box has-background-grey" style="height: 25rem; overflow-y: auto; overflow-x: hidden;">
+     <div id="chatArea" class="box has-background-grey" style="height: 35rem; overflow-y: auto; overflow-x: hidden;">
      </div>
 
      <form onsubmit="return uploadData()" class="mb-3 mx-6">
@@ -42,7 +36,7 @@
      </form>
 
      <div class="box py-2 px-3 mt-6 mx-auto has-background-grey-dark has-text-centered" style="width: 10rem;">
-          <span id="status" style="font-size: 0.8em; color: hsl(0, 0%, 71%);">&nbsp;</span>
+          <span id="status" class="is-size-7" style="color: hsl(0, 0%, 71%);">&nbsp;</span>
      </div>
 </body>
 
