@@ -8,6 +8,10 @@
      margin-right: 0.5rem;
 }
 
+.msg-img {
+     border: 2px solid rgb(54, 54, 54);
+}
+
 .msg-time {
      align-self: center;
 }

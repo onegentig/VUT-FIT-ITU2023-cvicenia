@@ -36,6 +36,9 @@ const STATUS_CHANGE_FLASH_TIME = 100; // v milisekundách
 const READY_STATE_DONE = 4;
 const STATUS_OK = 200;
 
+/** @type {Record<String, String>} */
+let avatarsMap = {};
+
 /* === Hlavné funkcie === */
 
 /**
@@ -216,15 +219,13 @@ function displayError (message) {
 function createMsgComponent (msg) {
      /* Časový string (day.js, ak dostupné) */
      const timeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString('cz-CZ', { dateStyle: 'short', timeStyle: 'short' });
-
-     /* Profilovka */
-     const avatar = `https://ui-avatars.com/api/?name=${msg.login}&background=random&size=48&bold=true`;
+     const avatar = avatarsMap[msg.login] || `https://ui-avatars.com/api/?name=${msg.login}&background=random&size=48&bold=true`;
 
      return `
     <div id="msg-${msg.id}" class="my-4 is-flex">
         <!-- Avatar -->
         <figure class="image is-48x48 mr-3">
-            <img class="is-rounded" src="${avatar}" alt="${msg.login}" />
+            <img class="msg-img is-rounded" src="${avatar}" alt="${msg.login}" />
         </figure>
 
         <!-- Message box -->
@@ -249,3 +250,9 @@ function createMsgComponent (msg) {
 
 // Pooling nových správ
 setInterval(downloadData, POOLING_TIME);
+
+// Načítanie profiloviek z `avatars.json`
+fetch('avatars.json')
+     .then(response => response.json())
+     .then(data => avatarsMap = data)
+     .catch(error => console.error(error));
