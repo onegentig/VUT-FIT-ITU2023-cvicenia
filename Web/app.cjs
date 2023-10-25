@@ -27,6 +27,7 @@ var dayjs;
 
 const API_URL = 'https://pckiss.fit.vutbr.cz/itu/api.php';
 const USERNAME = 'xnotme69';
+const FLASH_COLOR = 'hsl(48, 100%, 67%)';
 const POOLING_TIME = 1000; // v milisekundách
 const STATUS_CHANGE_FLASH_TIME = 100; // v milisekundách
 
@@ -143,24 +144,29 @@ function displayMessages (msgs) {
            * už spracovaných správ, a nemusel som pridávať globálne
            * `lastId` alebo `lastTime` alebo whatever.
            */
-          if (document.querySelector(`#message-${msg.id}`)) continue;
+          if (document.querySelector(`#msg-${msg.id}`)) continue;
 
           /* Vytvoriť div pre správu */
           const msgDiv = document.createElement('div');
-          msgDiv.id = `message-${msg.id}`;
+          msgDiv.id = `msg-${msg.id}`;
 
-          /* day.js */
-          let msgTimeStr = '';
-          msgTimeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString();
+          /* Rozdielne správanie pre Bulma a plain */
+          if (document.querySelector('body').classList.contains('use-bulma'))
+               msgDiv.innerHTML = createMsgComponent(msg);
+          else {
+               /* day.js */
+               let msgTimeStr = '';
+               msgTimeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString();
 
-          /* Obsah */
-          msgDiv.innerHTML = `
-            <div class="message-header">
-                <span class="message-username">${msg.login}</span>
-                <span class="message-dts">${msgTimeStr}</span>
-            </div>
-            <div class="message-content">${decodeURIComponent(msg.cnt)}</div>
-        `;
+               /* Obsah */
+               msgDiv.innerHTML = `
+               <div class="msg-header">
+                    <span class="msg-username">${msg.login}</span>
+                    <span class="msg-dts">${msgTimeStr}</span>
+               </div>
+               <div class="msg-content">${decodeURIComponent(msg.cnt)}</div>
+          `;
+          }
 
           /* Pridať do chatu */
           chat.append(msgDiv);
@@ -184,9 +190,10 @@ function updateStatus (message) {
      stat.innerHTML = message;
 
      /* Zmeniť farbu na žltú (na krátku chvíľu) */
-     stat.style.color = 'yellow';
+     const pColor = stat.style.color;
+     stat.style.color = FLASH_COLOR;
      setTimeout(() => {
-          stat.style.color = 'white';
+          stat.style.color = pColor;
      }, STATUS_CHANGE_FLASH_TIME);
 }
 
@@ -199,6 +206,43 @@ function updateStatus (message) {
 function displayError (message) {
      console.error(message);
      alert(message);
+}
+
+/**
+ * Vytvorí HTML komponentu pre jednu chat správu.
+ * @param {ChatMessage} msg
+ * @returns {String} HTML komponenta ako string
+ */
+function createMsgComponent (msg) {
+     /* Časový string (day.js, ak dostupné) */
+     const timeStr = typeof dayjs === 'function' ? dayjs().calendar(dayjs(msg.dts)) : new Date(msg.dts).toLocaleString('cz-CZ', { dateStyle: 'short', timeStyle: 'short' });
+
+     /* Profilovka */
+     const avatar = `https://ui-avatars.com/api/?name=${msg.login}&background=random&size=48&bold=true`;
+
+     return `
+    <div id="msg-${msg.id}" class="my-4 is-flex">
+        <!-- Avatar -->
+        <figure class="image is-48x48 mr-3">
+            <img class="is-rounded" src="${avatar}" alt="${msg.login}" />
+        </figure>
+
+        <!-- Message box -->
+        <div class="msg-box">
+            <div class="is-flex mb-1">
+                <!-- Username -->
+                <strong class="msg-name has-text-secondary-dark">${msg.login}</strong>
+                <!-- Timestamp -->
+                <span class="msg-time has-text-grey-dark is-size-7">${timeStr}</span>
+            </div>
+
+            <!-- Message Content -->
+            <div class="msg-content">
+                ${msg.cnt}
+            </div>
+        </div>
+    </div>
+`;
 }
 
 /* === Koreňové volania === */

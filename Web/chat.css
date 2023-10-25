@@ -1,0 +1,23 @@
+.msg-box {
+     flex: 1;
+     min-width: 0;
+}
+
+.msg-name {
+     white-space: nowrap;
+     margin-right: 0.5rem;
+}
+
+.msg-time {
+     align-self: center;
+}
+
+.msg-content {
+     background-color: rgba(0, 0, 0, 0.1);
+     border-radius: 5px;
+     display: inline-block;
+     max-width: 80%;
+     overflow-wrap: break-word;
+     white-space: normal;
+     padding: 0.5rem;
+}

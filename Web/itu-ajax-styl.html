@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html class="has-background-dark">
+
+<head>
+     <title> ITUChat </title>
+     <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-2" />
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <!-- Scripts -->
+     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/dayjs.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/calendar.js"></script>
+     <script>
+          dayjs.extend(window.dayjs_plugin_calendar);
+     </script>
+     <script type="application/javascript" src="app.cjs"></script>
+
+     <!-- Styles -->
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+     <link rel="stylesheet" href="chat.css">
+     <style type="text/css">
+          /*div,
+          input {
+               margin: 10px;
+          }*/
+     </style>
+</head>
+
+<body class="use-bulma m-6">
+     <div id="chatArea" class="box has-background-grey" style="height: 25rem; overflow-y: auto; overflow-x: hidden;">
+     </div>
+
+     <form onsubmit="return uploadData()" class="mb-3 mx-6">
+          <div class="field has-addons">
+               <div class="control is-expanded">
+                    <input class="input" type="text" placeholder="Nová správa" id="newMessageString">
+               </div>
+               <div class="control">
+                    <button class="button is-primary is-dark">Poslať</button>
+               </div>
+          </div>
+     </form>
+
+     <div class="box py-2 px-3 mt-6 mx-auto has-background-grey-dark has-text-centered" style="width: 10rem;">
+          <span id="status" style="font-size: 0.8em; color: hsl(0, 0%, 71%);">&nbsp;</span>
+     </div>
+</body>
+
+</html>
