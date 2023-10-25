@@ -21,13 +21,19 @@
 </head>
 
 <body class="use-bulma m-6">
+     <div class="field" style="width: 7rem;">
+          <div class="control">
+               <input id="login" class="input" style="height: 2rem;" type="text" value="xlogin00">
+          </div>
+
+     </div>
      <div id="chatArea" class="box has-background-grey" style="height: 35rem; overflow-y: auto; overflow-x: hidden;">
      </div>
 
      <form onsubmit="return uploadData()" class="mb-3 mx-6">
           <div class="field has-addons">
                <div class="control is-expanded">
-                    <input class="input" type="text" placeholder="Nová správa" id="newMessageString">
+                    <input id="newMessageString" class="input" type="text" placeholder="Nová správa">
                </div>
                <div class="control">
                     <button class="button is-primary is-dark">Poslať</button>

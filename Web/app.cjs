@@ -26,10 +26,9 @@ var dayjs;
 /* Konfigurácia */
 
 const API_URL = 'https://pckiss.fit.vutbr.cz/itu/api.php';
-const USERNAME = '';
 const FLASH_COLOR = 'hsl(48, 100%, 67%)';
-const POOLING_TIME = 1000; // v milisekundách
-const STATUS_CHANGE_FLASH_TIME = 100; // v milisekundách
+const POOLING_TIME = 400;
+const STATUS_CHANGE_FLASH_TIME = 100;
 
 /* Systémové konštanty */
 
@@ -87,7 +86,7 @@ function uploadData () {
           /* Vytvoriť a odoslať požiadavok */
           req.open('POST', API_URL, true); // Async. POST na API_URL
           req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          req.send(`user=${USERNAME}&data=${encodeURIComponent(data)}`);
+          req.send(`user=${getUsername()}&data=${encodeURIComponent(data)}`);
      } catch (error) {
           displayError(error.toString());
           return false;
@@ -192,7 +191,7 @@ function updateStatus (message) {
      stat.innerHTML = message;
 
      /* Zmeniť farbu na žltú (na krátku chvíľu) */
-     const pColor = stat.style.color;
+     const pColor = /* stat.style.color */ 'hsl(0, 0%, 71%)';
      stat.style.color = FLASH_COLOR;
      setTimeout(() => {
           stat.style.color = pColor;
@@ -243,6 +242,22 @@ function createMsgComponent (msg) {
           </div>
      </div>
      `;
+}
+
+/**
+ * Získa uživateľské meno z imputu.
+ * @return {String} login/username
+ */
+function getUsername () {
+     const input = /** @type {HTMLInputElement} */ (document.querySelector('#login'));
+     const login = input.value;
+
+     if (!login) {
+          input.value = 'xlogin00';
+          return 'xlogin00';
+     }
+
+     return login;
 }
 
 /* === Koreňové volania === */
