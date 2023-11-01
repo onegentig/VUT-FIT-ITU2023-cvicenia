@@ -1,6 +1,6 @@
-> ⚠️ Tento README je prepis [ITU 23/24Z \> Cvičení > Figma a prototypování](https://moodle.vut.cz/mod/page/view.php?id=320741).
+# Figma a prototypování #
 
-### Spouštění a instalace ###
+## Spouštění a instalace ##
 
 Spustitelný soubor figmy by pro Vás už měl být v CVT nachystaný (aja/figma).
 
@@ -14,13 +14,13 @@ Po otevření je potřeba se přihlásit nebo registrovat.
 
 Pro milovníky open source existuje alternativa k Figmě. Jmenuje se [PenPot](https://penpot.app/) a můžete si ho spustit u vás lokálně (klidně ho pak použít na projekt). Na cvičení ale prosím použít Figmu.
 
-### Výsledek ###
+## Výsledek ##
 
 Vaším úkolem bude vytvořit prototyp aplikace Flashcards, který může vypadat třeba nějak takto:
 
 - [Odkaz na funkční prototyp](https://www.figma.com/proto/JQfvLPSGARR0vyRzZwl1fQ/remember?page-id=0%3A1&node-id=22%3A74&viewport=383%2C541%2C0.12&scaling=scale-down&starting-point-node-id=19%3A62), [pdf](VZOR.pdf)
 
-#### Color Styles ####
+### Color Styles ###
 
 Pro cvičení stačí, když budete používat styly na barvy (samozřejmě bonus, když budete stylovat i texty), budete potřebovat minimálně tyto barvy:
 
@@ -29,15 +29,15 @@ Pro cvičení stačí, když budete používat styly na barvy (samozřejmě bonu
 - success
 - error
 
-#### Kreativita ####
+### Kreativita ###
 
 Kreativita není součástí hodnocení, ale rozhodně si můžete udělat svůj vlastní design, jen prosím zachovejte funkcionalitu a nezapomeňte na body, které se hodnotí. Na druhou stranu, pokud nechcete přemýšlet nad vzhledem, není problém se držet přesně zadání.
 
-#### Co byste měli stihnout ####
+### Co byste měli stihnout ###
 
 Měli byste stihnout 4 obrazovky - hlavní stranu, hrací stranu se 2 režimy (hide, show) a pak summary. Ostatní obrazovky není potřeba navrhovat (jsou zde pouze pokud by Vám zbylo hodně času). Smart animace mezi hide a show režimem karet není potřeba (nejsou za ni žádné navíc body).
 
-#### Za co jsou body aneb co se bude hodnotit ####
+### Za co jsou body aneb co se bude hodnotit ###
 
 - 1 bod - správné použití komponent (pro sekce/kategorie na hlavní straně, pro tlačítka)
 - 1 bod - správné použití autolayoutu (sekce, responzivní tlačítko)
@@ -66,13 +66,13 @@ Na přednášce projdeme základy Figmy a všechno, co na cvičení budete potř
 
 [![Figma mini course](https://img.youtube.com/vi/IOVFRMuPeVQ/hqdefault.jpg)](https://www.youtube.com/embed/IOVFRMuPeVQ)
 
-[![](https://img.youtube.com/vi/k74IrUNaJVk/hqdefault.jpg)](https://www.youtube.com/embed/k74IrUNaJVk)
+[![Figma – Components Demo](https://img.youtube.com/vi/k74IrUNaJVk/hqdefault.jpg)](https://www.youtube.com/embed/k74IrUNaJVk)
 
-[![](https://img.youtube.com/vi/TyaGpGDFczw/hqdefault.jpg)](https://www.youtube.com/embed/TyaGpGDFczw)
+[![Figma – Auto-Layout Demo](https://img.youtube.com/vi/TyaGpGDFczw/hqdefault.jpg)](https://www.youtube.com/embed/TyaGpGDFczw)
 
-[![](https://img.youtube.com/vi/gtQ_A3imzsg/hqdefault.jpg)](https://www.youtube.com/embed/gtQ_A3imzsg)
+[![Figma – Styling Demo](https://img.youtube.com/vi/gtQ_A3imzsg/hqdefault.jpg)](https://www.youtube.com/embed/gtQ_A3imzsg)
 
-[![](https://img.youtube.com/vi/-sAAa-CCOcg/hqdefault.jpg)](https://www.youtube.com/embed/-sAAa-CCOcg)
+[![Figma – Prototyping Demo](https://img.youtube.com/vi/-sAAa-CCOcg/hqdefault.jpg)](https://www.youtube.com/embed/-sAAa-CCOcg)
 
 </div>
 

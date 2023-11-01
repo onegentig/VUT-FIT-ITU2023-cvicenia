@@ -1,4 +1,4 @@
-> ⚠️ README.md je prepis [ITU 23/24Z \> Cvičení > Cvičení Qt](https://moodle.vut.cz/mod/page/view.php?id=320743)
+# Cvičení Qt #
 
 Soubory ke cvičení: [ITU-Qt-cviceni.zip](https://moodle.vut.cz/pluginfile.php/597572/mod_page/content/10/ITU-Qt-cviceni.zip)
 

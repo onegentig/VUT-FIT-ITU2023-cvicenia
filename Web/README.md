@@ -1,4 +1,4 @@
-> *⚠️ README je prepis [ITU 23/24Z > Cvičení > Cvičení Web](https://moodle.vut.cz/course/view.php?id=268279#section-16).*
+# Cvičení Web #
 
 ## Úvod ##
 
@@ -62,7 +62,7 @@ Důležitým atributem požadavku v rámci AJAXu je tzv. [readyState](https://ww
 
 Na každý požadavek server odesílá odpověď. Důležitým atributem odpovědi je její status. Pomocí něj se určuje, zda se daný požadavek podařilo zpracovat, nebo došlo k chybě. Status odpovědi typicky zobrazují také prohlížeče, kdy například při chybně zadané URL dostaneme známý kód 404 (nenalezeno). Pokud vše proběhne v pořádku, používá se kód 200 (OK). Druhým důležitým atributem jsou získaná data, která je potřeba následně zpracovat.
 
-### Užitečné kódy ###
+### AJAX užitečné kódy ###
 
 #### Vytvoření požadavku ####
 
@@ -129,7 +129,7 @@ function send()
 
 ## Server ##
 
-Server, který máte v rámci cvičení k dispozici, má URL [https://pckiss.fit.vutbr.cz/itu/api.php](https://pckiss.fit.vutbr.cz/itu/api.php). Všichni budete získávat i odesílat data na tento server, tudíž budete mít jeden společný chat, který všichni uvidí a do kterého budou všichni přispívat svými zprávami. 
+Server, který máte v rámci cvičení k dispozici, má URL [https://pckiss.fit.vutbr.cz/itu/api.php](https://pckiss.fit.vutbr.cz/itu/api.php). Všichni budete získávat i odesílat data na tento server, tudíž budete mít jeden společný chat, který všichni uvidí a do kterého budou všichni přispívat svými zprávami.
 
 ### Popis API ###
 
@@ -149,7 +149,7 @@ Pro odeslání zprávy je potřeba zaslat POST požadavek na URL serveru s tím,
 
 Většina nejnovějších prohlížečů umožňuje přístup k tzv. vývojářským nástrojům (např. v Google Chrome pomocí Ctrl+Shift+I, F12, nebo přes Menu → Další nástroje → Vývojářské nástroje). Zde je možné se podívat na HTML kód zobrazené webové stránky, do konzole a na další užitečné údaje pro ladění stránek. V případě, že v JavaScriptu dojde k chybě (proměnná neexistuje, funkce neexistuje nebo libovolná jiná výjimka), tak prohlížeč ukončí vykonávání skriptu. Výstup se v tomto případě zobrazí právě v konzoli. Pokud v JavaScriptu použijete funkci console.log(), do konzole se vypíše text, který ji zadáte jako parametr. Do samotné konzole potom můžete také zapisovat kód, který se ihned na stránce vykoná. Další užitečnou záložkou jsou informace o síti. Zde je možné v čase vidět všechny odesílané požadavky, které odcházejí z webové stránky. Můžete si tak zkontrolovat, jaké údaje odesíláte a jaké odpovědi získáváte.
 
-### Užitečné kódy ###
+### JS užitečné kódy ###
 
 #### Vyskakovací okno pro zobrazení dat ####
 
@@ -217,3 +217,7 @@ for (var i in pole)
 - [W3Schools – HTML](https://www.w3schools.com/html/default.asp)
 - kolektiv autorů: AJAX a PHP - tvoříme interaktivní webové aplikace, Zoner Press, 2006.
 - Asleson, R., Schutta, N. T.: AJAX - vytváříme vysoce interaktivní webové aplikace, Computer Press, 2006.
+
+--------------------
+
+Naposledy změněno: pondělí, 23. října 2023, 12.35
