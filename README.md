@@ -8,7 +8,7 @@
     <img alt="demo" src=".github/demo.gif" width="50%">
 </div>
 
-Celkové hodnotenie: 25 / 25<br />（imo veľmi fun cviká <img alt=":Koteseni:" src="https://github.com/onegentig/VUT-FIT-ITU2023-cvicenia/assets/84882649/ef808690-c348-435d-8e6f-bf36810b1006" height="16px" />）
+Celkové hodnotenie: 25 / 25<br />（imo veľmi fun cviká <img alt=":FeelsGoodMan:" src="https://github.com/onegentig/VUT-FIT-ITU2023-cvicenia/assets/84882649/e304eb2b-6328-4511-9e6b-bf5f6ee22985" height="16px" />）
 
 ----------------------------------------------
 
