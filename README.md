@@ -5,7 +5,7 @@
 ⚠️ **Zverejnené pre archívne účely — nekopírujte, nula by Vás mrzela. Za nič také nenesiem žiadnu zodpovednosť!** Všetky odovzdané projekty prechádzajú kontrolou plagiátorstva, pri ktorej sa porovnávajú aj s dávnejšie odovzdanými riešeniami.
 
 <div align="center">
-    <img alt="demo" src=".github/demo.gif" width="60%">
+    <img alt="demo" src=".github/demo.gif" width="50%">
 </div>
 
 Celkové hodnotenie: 25 / 25<br />（imo veľmi fun cviká <img alt=":Koteseni:" src="https://github.com/onegentig/VUT-FIT-ITU2023-cvicenia/assets/84882649/ef808690-c348-435d-8e6f-bf36810b1006" height="16px" />）
